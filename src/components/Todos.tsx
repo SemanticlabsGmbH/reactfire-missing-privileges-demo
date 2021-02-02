@@ -15,7 +15,7 @@ function useTodos(): TodoData[] {
     return useFirestoreCollectionData<TodoData>(query, { idField: "id", initialData: [] }).data;
 }
 
-export default function Dashboard(): ReactElement {
+export default function Todos(): ReactElement {
     const auth = useAuth();
     const logout = async () => {
         await auth.signOut();
@@ -24,7 +24,7 @@ export default function Dashboard(): ReactElement {
 
     return (
             <>
-                <p>You're logged in!</p>
+                <h1>Todos</h1>
                 <ul>
                     {todos.map(todo => <li key={todo.task}>{todo.task}</li>)}
                 </ul>

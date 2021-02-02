@@ -8,7 +8,5 @@ export default function Login(): ReactElement {
         await auth.signInWithEmailAndPassword("user@example.com", "password")
     }
 
-    return (
-            <button onClick={login}>Login</button>
-    )
+    return <button onClick={login}>Login</button>;
 }
