@@ -1,46 +1,40 @@
-# Getting Started with Create React App
+This project reproduces the reactfire issue discribed [here](https://github.com/FirebaseExtended/reactfire/discussions/228).
+It's also hosted at https://reactfire-missing-privileges.web.app/.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Install dependencies and start application
 
-## Available Scripts
+```shell
+npm install
+npm run start
+```
 
-In the project directory, you can run:
+This also starts the firebase emulators for auth, storage and hosting with a registered user and a `todos` collection
+with a single todo in the firestore.
 
-### `npm start`
+## How to reproduce the issue
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Open http://localhost:3000.
+2. Click the "Login" button.
+3. The todo list is displayed. Click "Logout".
+4. Click "Login" again.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+You should see a blank page now. When you open the browser console, you will find the following error:
 
-### `npm test`
+```
+scheduler.development.js:407 Uncaught FirebaseError: 
+false for 'list' @ L5
+    at new e (http://localhost:3000/static/js/1.chunk.js:12520:19)
+    at http://localhost:3000/static/js/1.chunk.js:24763:18
+    at http://localhost:3000/static/js/1.chunk.js:24764:10
+    at e.onMessage (http://localhost:3000/static/js/1.chunk.js:24785:6)
+    at http://localhost:3000/static/js/1.chunk.js:24676:18
+    at http://localhost:3000/static/js/1.chunk.js:24714:29
+    at http://localhost:3000/static/js/1.chunk.js:30787:25
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The `firestore.rules` also log the authentication and by looking at `firestore-debug.log`, you'll notice that the
+authentication was null for the second login.
 
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```shell
+null_value: NULL_VALUE
+```
